@@ -16,7 +16,7 @@ TOML Resume
 
 
 
-Generate measy-to-write resumes using TOML , outputs JSON in JSON Resume Format
+Generate easy-to-write resumes using TOML , outputs JSON in JSON Resume Format
 
 
 * Free software: MIT license
@@ -26,7 +26,9 @@ Generate measy-to-write resumes using TOML , outputs JSON in JSON Resume Format
 Features
 --------
 
-* TODO
+* Convert JSON Resume to TOML-Resume format with default flavor
+* Convert TOML Resume with multiple flavors to a single JSON Resume format Resume
+
 
 Credits
 -------
