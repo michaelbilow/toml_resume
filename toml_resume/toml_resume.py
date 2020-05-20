@@ -11,26 +11,70 @@ from toml_resume.constants import (_DEFAULT, _ORDERING, _VALUE,
                                    RESUME_TOP_LEVEL_SCHEMA_KEYS)
 
 
-def to_resume_json(d: dict, filename: str, flavors: Set[str] = None):
+def read_resume_json(filename: str):
+    d = json.load(open(filename, 'r'))
+    assert all(k in RESUME_TOP_LEVEL_SCHEMA_KEYS for k in d)
+    return d
+
+
+def read_resume_toml(filename: str):
+    d = toml.load(open(filename, 'r'))
+    d = add_default_extension(d)
+    return d
+
+
+def to_resume_json(d: dict, filename: str, flavors: List[str] = None):
     if flavors is None:
-        flavors = {"default"}
+        flavors = []
+    if _DEFAULT not in flavors:
+        flavors = [_DEFAULT] + flavors
 
     output = combine_all_flavors(d, flavors)
+    output = recursively_remove_list_ordering(output)
 
     with open(filename, 'w') as f:
-        json.dump(d, f)
+        json.dump(output, f)
 
 
-def combine_all_flavors(d: dict, flavors: Set[str]):
+def combine_all_flavors(d: dict, flavors: List[str]):
     to_combine = [d[flavor] for flavor in flavors]
     return recursively_sort_combine(to_combine)
 
 
 def recursively_sort_combine(ds: List[dict]):
-    functools.reduce(sort_combine, ds)
+    return functools.reduce(sort_combine, ds)
+
+
+def remove_ordering_from_list(l):
+    return [recursively_remove_list_ordering(li[_VALUE])for li in l]
+
+
+def recursively_remove_list_ordering(d):
+    if isinstance(d, list):
+        return remove_ordering_from_list(d)
+    elif not isinstance(d, dict):
+        return d
+    else:
+        output_dict = {}
+        for k, v in d.items():
+            if isinstance(v, dict):
+                output_dict[k] = recursively_remove_list_ordering(v)
+            elif isinstance(v, list):
+                output_dict[k] = remove_ordering_from_list(v)
+            else:
+                output_dict[k] = v
+        return output_dict
 
 
 def sort_combine(d1: dict, d2: dict):
+    """
+    Combines two dictionaries recursively,
+    favoring elements from the second dictionary
+    when in conflict.
+    :param d1:
+    :param d2:
+    :return:
+    """
     output_dict = {}
     for k in set(list(d1.keys()) + list(d2.keys())):
         if k not in d2:
@@ -46,14 +90,23 @@ def sort_combine(d1: dict, d2: dict):
         elif isinstance(v1, list):
             output_dict = sort_merge_lists(v1, v2)
         else:
-            raise ValueError(f"conflicting values for {k}:\n\n{v1}\n&\n{v2}")
+            output_dict[k] = v2
     return output_dict
 
 
 def sort_merge_lists(l1: list, l2: list):
-    raw_output = l1 + l2
-    output = sorted(raw_output, key=lambda x: x[_ORDERING])
-    assert len(set(x[_ORDERING] for x in output)) == len(output)
+    output = []
+    stack1 = list(reversed(l1))
+    stack2 = list(reversed(l2))
+    while stack1 and stack2:
+        if stack1[-1][_ORDERING] < stack2[-1][_ORDERING]:
+            output.append(stack1.pop())
+        elif stack1[-1][_ORDERING] > stack2[-1][_ORDERING]:
+            output.append(stack2.pop())
+        else:
+            output.append(stack2.pop())
+            stack1.pop()
+    output = output + list(reversed(stack1 + stack2))
     return output
 
 
@@ -67,9 +120,11 @@ def to_resume_toml(d: dict, filename: str):
 
 def add_default_extension(d: dict):
     output_dict = defaultdict(dict)
-    for k in d.keys():
+    for k, v in d.items():
         if k in RESUME_TOP_LEVEL_SCHEMA_KEYS:
-            output_dict[_DEFAULT][k] = d[k]
+            output_dict[_DEFAULT][k] = v
+        else:
+            output_dict[k] = v
     return output_dict
 
 
