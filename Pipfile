@@ -18,4 +18,5 @@ isort = "*"
 yapf = "*"
 
 [packages]
-toml_resume = {editable = true,path = "."}
+toml_resume = {path = "."}
+jsonschema = "*"

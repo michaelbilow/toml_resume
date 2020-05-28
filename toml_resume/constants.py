@@ -1,6 +1,9 @@
+import json
+from pathlib import Path
+
 _ORDERING = "ordering"
 _VALUE = "value"
-_DEFAULT = "default"
+_DEFAULT = "_default"
 
 RESUME_TOP_LEVEL_SCHEMA_KEYS = {
     "basics",
@@ -16,3 +19,7 @@ RESUME_TOP_LEVEL_SCHEMA_KEYS = {
     "references",
     "projects",
 }
+
+RESUME_JSON_SCHEMA = json.load(
+    open(str(Path(__file__).parent.absolute().joinpath('resources/schema.json')), 'r')
+)
