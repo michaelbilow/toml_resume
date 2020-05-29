@@ -1,5 +1,8 @@
 import fire
 from toml_resume.toml_resume import *
+from toml_resume.export.export import generate_resume_from_toml, \
+    generate_resume_from_json, DEFAULT_THEME
+from typing import Optional, List
 import os
 
 
@@ -20,6 +23,17 @@ class TomlResume:
             output_filename = f"{os.path.splitext(filename)[0]}{flavor_text}.json"
         d = read_resume_toml(filename)
         write_resume_json(d, output_filename, flavors)
+
+    def toPdf(self, filename: str,
+              output_filename: Optional[str] = None,
+              flavors: Optional[List[str]] = None,
+              theme: str = None):
+        if not theme:
+            theme = DEFAULT_THEME
+        if filename.endswith('.toml'):
+            generate_resume_from_toml(filename, flavors, output_filename, theme)
+        if filename.endswith('.json'):
+            generate_resume_from_json(filename, output_filename, theme)
 
 
 if __name__ == "__main__":

@@ -8,11 +8,12 @@ from typing import Dict, List, Optional, Any
 import toml
 
 from toml_resume.constants import (_DEFAULT, RESUME_JSON_SCHEMA)
+from toml_resume.encoder import neat_encoder
 
 
 def read_resume_json(filename: str) -> Dict[str, Any]:
     d = json.load(open(filename, 'r'))
-    assert jsonschema.validate(d, RESUME_JSON_SCHEMA)
+    jsonschema.validate(d, RESUME_JSON_SCHEMA)
     return d
 
 
@@ -23,7 +24,7 @@ def read_resume_toml(filename: str) -> Dict[str, Any]:
 
 def write_resume_toml(d: Dict[str, Any], filename: str) -> None:
     with open(filename, 'w') as f:
-        toml.dump(d, f)
+        toml.dump(d, f, neat_encoder)
 
 
 def write_resume_json(d: dict, filename: str, flavors: Optional[List[str]] = None) -> None:
@@ -32,7 +33,6 @@ def write_resume_json(d: dict, filename: str, flavors: Optional[List[str]] = Non
     if _DEFAULT not in flavors:
         flavors.append(_DEFAULT)
     flavors = clean_flavors(flavors)
-    print(flavors)
     output = combine_all_flavors(d, flavors)
     jsonschema.validate(output, RESUME_JSON_SCHEMA)
     with open(filename, 'w') as f:
@@ -81,9 +81,7 @@ def flatten_flavors_dict(d: dict, flavors: List[str]) -> dict:
     for k, v in d.items():
         if isinstance(v, dict):
             if all(is_flavor(x) for x in v):
-                # print(v)
                 chosen_key = first_present_key(v, flavors)
-                # print(chosen_key)
                 if chosen_key:
                     chosen_value = v[chosen_key]
                     if isinstance(chosen_value, dict):
@@ -92,6 +90,8 @@ def flatten_flavors_dict(d: dict, flavors: List[str]) -> dict:
                         output_dict[k] = flatten_flavors_list(chosen_value, flavors)
                     else:
                         output_dict[k] = chosen_value
+            else:
+                output_dict[k] = flatten_flavors_dict(v, flavors)
         elif isinstance(v, list):
             output_dict[k] = flatten_flavors_list(v, flavors)
         else:
@@ -105,8 +105,6 @@ def flatten_flavors_list(l: List[Any], flavors: List[str]) -> List[Any]:
         if isinstance(li, list):
             output_lst.append(flatten_flavors_list(li, flavors))
         elif isinstance(li, dict):
-            # print(li)
-            # print(flatten_flavors_dict(li, flavors))
             output_lst.append(flatten_flavors_dict(li, flavors))
         else:
             output_lst.append(li)

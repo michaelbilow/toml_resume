@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f3561f70063935c302121505c21a817b68d65eb903b4296022d0d970f448f4c7"
+            "sha256": "ffd8d77c84715d2d4d10468849d61a5e00ce3c685c5d2c68121595eecca958ed"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -55,7 +55,15 @@
             ],
             "version": "==1.1.0"
         },
+        "toml": {
+            "hashes": [
+                "sha256:926b612be1e5ce0634a2ca03470f95169cf16f939018233a670519cb4ac58b0f",
+                "sha256:bda89d5935c2eac546d648028b9901107a595863cb36bae0c73ac804a9b4ce88"
+            ],
+            "version": "==0.10.1"
+        },
         "toml-resume": {
+            "editable": true,
             "path": "."
         }
     },
