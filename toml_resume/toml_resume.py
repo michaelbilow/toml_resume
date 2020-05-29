@@ -75,9 +75,18 @@ def flatten_flavors_dict(d: dict, flavors: List[str]) -> dict:
     output_dict = {}
     if not d:
         return {}
+    if not isinstance(d, dict):
+        print(d)
+        raise ValueError
     if all(is_flavor(x) for x in d):
         chosen_key = first_present_key(d, flavors)
-        return flatten_flavors_dict(d[chosen_key], flavors)
+        chosen_value = d[chosen_key]
+        if isinstance(chosen_value, dict):
+            return flatten_flavors_dict(chosen_value, flavors)
+        elif isinstance(chosen_value, list):
+            return flatten_flavors_list(chosen_value, flavors)
+        else:
+            return chosen_value
     for k, v in d.items():
         if isinstance(v, dict):
             if all(is_flavor(x) for x in v):

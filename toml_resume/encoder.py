@@ -1,6 +1,6 @@
 from toml.encoder import _dump_str, TomlArraySeparatorEncoder
 
-LINE_LENGTH = 80
+LINE_LENGTH = 90
 
 
 def _dump_multiline_string(s):
