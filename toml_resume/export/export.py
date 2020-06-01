@@ -84,7 +84,7 @@ def export_with_json_resume(output_filename: Path, theme: str):
                         str(output_filename.name), "--theme", theme],
                        cwd=str(output_filename.parent.absolute()))
     except FileNotFoundError as e:
-        print("Install resume-cli `npm install -g resume-cli`")
+        print("Install resume-cli: `npm install -g resume-cli`")
         raise e
     return
 
@@ -99,6 +99,6 @@ def print_with_puppeteer(input_html_filename: str, output_filename: str,
             output_filename
         ])
     except FileNotFoundError as e:
-        print("Install puppeteer `npm install -g puppeteer`")
+        print("Install puppeteer: `npm install -g puppeteer`")
         raise e
     return
