@@ -2,15 +2,14 @@
 """Tests for `toml_resume` package."""
 # pylint: disable=redefined-outer-name
 
+import json
 import random
 
 import pytest
 
-import json
 from toml_resume import toml_resume
 from toml_resume.constants import (_ORDERING, _VALUE,
                                    RESUME_TOP_LEVEL_SCHEMA_KEYS)
-
 
 # def test_merge_lists():
 #     l1 = [{_ORDERING: 0, _VALUE: "x"}, {_ORDERING: 2, _VALUE: "z"}]
@@ -39,7 +38,6 @@ from toml_resume.constants import (_ORDERING, _VALUE,
 #     output = toml_resume.recursively_sort_combine([d1, d2])
 #     assert output == {**d1, **d2}
 
-
 # def test_round_trip(capsys):
 #     input_filename = 'example/resume.json'
 #     d = toml_resume.read_resume_json(input_filename)
@@ -64,13 +62,19 @@ def test_flavors(capsys):
 def test_big_flavors(capsys):
     d = {"_default": {"a": 1, "b": 2}, "_other": {"b": 3}}
     assert toml_resume.combine_all_flavors(d, ["_default"]) == d["_default"]
-    assert toml_resume.combine_all_flavors(d, ["_other", "_default"]) == {"a": 1, "b": 3}
+    assert toml_resume.combine_all_flavors(d, ["_other", "_default"]) == {
+        "a": 1,
+        "b": 3
+    }
 
 
 def test_get_default(capsys):
     d = {"a": 1, "b": 2, "_other": {"b": 3}}
     assert toml_resume.combine_all_flavors(d, ["_default"]) == {"a": 1, "b": 2}
-    assert toml_resume.combine_all_flavors(d, ["_other", "_default"]) == {"a": 1, "b": 3}
+    assert toml_resume.combine_all_flavors(d, ["_other", "_default"]) == {
+        "a": 1,
+        "b": 3
+    }
 
 
 def test_nested_flavors(capsys):

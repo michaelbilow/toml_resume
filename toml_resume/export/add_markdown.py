@@ -1,6 +1,6 @@
 import re
 
-ITALICIZE = {'__([^_]+)__':  r'<i>\1</i>'}
+ITALICIZE = {'__([^_]+)__': r'<i>\1</i>'}
 BOLD = {'[*]{2}([^*]+)[*]{2}': r'<b>\1</b>'}
 LINK = {r'\[([^\]]+)\]\(([^)]+)\)': r'<a href="\2">\1</a>'}
 EM_DASH = {r'(\w)--(\w)': r'\1&mdash;\2'}
@@ -46,7 +46,9 @@ def basic_markdown(s):
 def inject_css(css_dict):
     output_style_strs = []
     for selector, style_dict in css_dict.items():
-        css_style = '\n'.join([f"\t{element}: {value};" for element, value in style_dict.items()])
+        css_style = '\n'.join([
+            f"\t{element}: {value};" for element, value in style_dict.items()
+        ])
         output_style_str = f"{selector} {{\n{css_style}\n}}"
         output_style_strs.append(output_style_str)
     output_css = '\n\n'.join(output_style_strs)

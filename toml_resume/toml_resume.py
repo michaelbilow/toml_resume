@@ -2,12 +2,12 @@
 
 import functools
 import json
-import jsonschema
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 
+import jsonschema
 import toml
 
-from toml_resume.constants import (_DEFAULT, RESUME_JSON_SCHEMA)
+from toml_resume.constants import _DEFAULT, RESUME_JSON_SCHEMA
 from toml_resume.encoder import neat_encoder
 
 
@@ -27,7 +27,9 @@ def write_resume_toml(d: Dict[str, Any], filename: str) -> None:
         toml.dump(d, f, neat_encoder)
 
 
-def write_resume_json(d: dict, filename: str, flavors: Optional[List[str]] = None) -> None:
+def write_resume_json(d: dict,
+                      filename: str,
+                      flavors: Optional[List[str]] = None) -> None:
     if not flavors:
         flavors = []
     if _DEFAULT not in flavors:
@@ -57,10 +59,13 @@ def get_default(d: Dict[str, Any]) -> Dict[str, Any]:
     return output_dict
 
 
-def combine_all_flavors(d: Dict[str, Any], flavors: List[str]) -> Dict[str, Any]:
+def combine_all_flavors(d: Dict[str, Any],
+                        flavors: List[str]) -> Dict[str, Any]:
     with_default = get_default(d)
-    to_combine = [flatten_flavors_dict(with_default.get(flavor, {}), flavors)
-                  for flavor in flavors]
+    to_combine = [
+        flatten_flavors_dict(with_default.get(flavor, {}), flavors)
+        for flavor in flavors
+    ]
     return functools.reduce(lambda x, y: {**y, **x}, to_combine)
 
 
@@ -94,9 +99,11 @@ def flatten_flavors_dict(d: dict, flavors: List[str]) -> dict:
                 if chosen_key:
                     chosen_value = v[chosen_key]
                     if isinstance(chosen_value, dict):
-                        output_dict[k] = flatten_flavors_dict(chosen_value, flavors)
+                        output_dict[k] = flatten_flavors_dict(
+                            chosen_value, flavors)
                     elif isinstance(chosen_value, list):
-                        output_dict[k] = flatten_flavors_list(chosen_value, flavors)
+                        output_dict[k] = flatten_flavors_list(
+                            chosen_value, flavors)
                     else:
                         output_dict[k] = chosen_value
             else:

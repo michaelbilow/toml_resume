@@ -1,4 +1,4 @@
-from toml.encoder import _dump_str, TomlArraySeparatorEncoder
+from toml.encoder import TomlArraySeparatorEncoder, _dump_str
 
 LINE_LENGTH = 90
 
