@@ -4,7 +4,8 @@ ITALICIZE = {'__([^_]+)__': r'<i>\1</i>'}
 BOLD = {'[*]{2}([^*]+)[*]{2}': r'<b>\1</b>'}
 LINK = {r'\[([^\]]+)\]\(([^)]+)\)': r'<a href="\2">\1</a>'}
 EM_DASH = {r'(\w)--(\w)': r'\1&mdash;\2'}
-MARKDOWN_DICT = {**ITALICIZE, **BOLD, **LINK, **EM_DASH}
+EM_DASH_DATE = {r'(<span class="endDate">) - ': r'\1&mdash; '}
+MARKDOWN_DICT = {**ITALICIZE, **BOLD, **LINK, **EM_DASH, **EM_DASH_DATE}
 
 END_OF_STYLE = '</style>'
 

@@ -73,6 +73,8 @@ def generate_resume_from_json(json_filename: str,
     convert_markdown_and_add_css(raw_html_filename, clean_html_filename)
 
     print_with_puppeteer(clean_html_filename, output_filename, puppeteer_opts)
+    output_resume_filename = tmp_resume_filename.with_name(output_filename.stem).with_suffix(".json")
+    shutil.move(tmp_resume_filename, output_resume_filename)
     return
 
 
