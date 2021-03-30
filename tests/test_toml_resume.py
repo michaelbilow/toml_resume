@@ -8,8 +8,7 @@ import random
 import pytest
 
 from toml_resume import toml_resume
-from toml_resume.constants import (_ORDERING, _VALUE,
-                                   RESUME_TOP_LEVEL_SCHEMA_KEYS)
+from toml_resume.constants import _ORDERING, _VALUE, RESUME_TOP_LEVEL_SCHEMA_KEYS
 
 # def test_merge_lists():
 #     l1 = [{_ORDERING: 0, _VALUE: "x"}, {_ORDERING: 2, _VALUE: "z"}]
@@ -51,12 +50,12 @@ from toml_resume.constants import (_ORDERING, _VALUE,
 
 
 def test_flavors(capsys):
-    input_filename = 'example/flavors.toml'
+    input_filename = "example/flavors.toml"
     flavors = ["short"]
     d = toml_resume.read_resume_toml(input_filename)
     # print(json.dumps(d, indent=2))
-    toml_resume.write_resume_json(d, 'example/flavors_none.json')
-    toml_resume.write_resume_json(d, 'example/flavors_short.json', flavors)
+    toml_resume.write_resume_json(d, "example/flavors_none.json")
+    toml_resume.write_resume_json(d, "example/flavors_short.json", flavors)
 
 
 def test_big_flavors(capsys):
@@ -64,7 +63,7 @@ def test_big_flavors(capsys):
     assert toml_resume.combine_all_flavors(d, ["_default"]) == d["_default"]
     assert toml_resume.combine_all_flavors(d, ["_other", "_default"]) == {
         "a": 1,
-        "b": 3
+        "b": 3,
     }
 
 
@@ -73,7 +72,7 @@ def test_get_default(capsys):
     assert toml_resume.combine_all_flavors(d, ["_default"]) == {"a": 1, "b": 2}
     assert toml_resume.combine_all_flavors(d, ["_other", "_default"]) == {
         "a": 1,
-        "b": 3
+        "b": 3,
     }
 
 

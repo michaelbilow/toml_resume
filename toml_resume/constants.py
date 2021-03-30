@@ -21,7 +21,5 @@ RESUME_TOP_LEVEL_SCHEMA_KEYS = {
 }
 
 RESUME_JSON_SCHEMA = json.load(
-    open(
-        str(
-            Path(__file__).parent.absolute().joinpath(
-                'resources/schema.json')), 'r'))
+    open(str(Path(__file__).parent.absolute().joinpath("resources/schema.json")), "r")
+)

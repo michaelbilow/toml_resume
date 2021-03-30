@@ -12,24 +12,24 @@ from toml_resume.encoder import neat_encoder
 
 
 def read_resume_json(filename: str) -> Dict[str, Any]:
-    d = json.load(open(filename, 'r'))
+    d = json.load(open(filename, "r"))
     jsonschema.validate(d, RESUME_JSON_SCHEMA)
     return d
 
 
 def read_resume_toml(filename: str) -> Dict[str, Any]:
-    d = toml.load(open(filename, 'r'))
+    d = toml.load(open(filename, "r"))
     return d
 
 
 def write_resume_toml(d: Dict[str, Any], filename: str) -> None:
-    with open(filename, 'w') as f:
+    with open(filename, "w") as f:
         toml.dump(d, f, neat_encoder)
 
 
-def write_resume_json(d: dict,
-                      filename: str,
-                      flavors: Optional[List[str]] = None) -> None:
+def write_resume_json(
+    d: dict, filename: str, flavors: Optional[List[str]] = None
+) -> None:
     if not flavors:
         flavors = []
     if _DEFAULT not in flavors:
@@ -37,7 +37,7 @@ def write_resume_json(d: dict,
     flavors = clean_flavors(flavors)
     output = combine_all_flavors(d, flavors)
     jsonschema.validate(output, RESUME_JSON_SCHEMA)
-    with open(filename, 'w') as f:
+    with open(filename, "w") as f:
         json.dump(output, f, indent=2)
 
 
@@ -59,8 +59,7 @@ def get_default(d: Dict[str, Any]) -> Dict[str, Any]:
     return output_dict
 
 
-def combine_all_flavors(d: Dict[str, Any],
-                        flavors: List[str]) -> Dict[str, Any]:
+def combine_all_flavors(d: Dict[str, Any], flavors: List[str]) -> Dict[str, Any]:
     with_default = get_default(d)
     to_combine = [
         flatten_flavors_dict(with_default.get(flavor, {}), flavors)
@@ -99,11 +98,9 @@ def flatten_flavors_dict(d: dict, flavors: List[str]) -> dict:
                 if chosen_key:
                     chosen_value = v[chosen_key]
                     if isinstance(chosen_value, dict):
-                        output_dict[k] = flatten_flavors_dict(
-                            chosen_value, flavors)
+                        output_dict[k] = flatten_flavors_dict(chosen_value, flavors)
                     elif isinstance(chosen_value, list):
-                        output_dict[k] = flatten_flavors_list(
-                            chosen_value, flavors)
+                        output_dict[k] = flatten_flavors_list(chosen_value, flavors)
                     else:
                         output_dict[k] = chosen_value
             else:
