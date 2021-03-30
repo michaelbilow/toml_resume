@@ -3,6 +3,8 @@ personal/*
 .idea/*
 target/*
 .DS_Store
+node_modules/
+package*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

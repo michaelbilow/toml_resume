@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-invoke = "*"
 bumpversion = "*"
 coverage = "*"
 wheel = "*"
@@ -16,8 +15,10 @@ pylint = "*"
 pytest = "*"
 isort = "*"
 yapf = "*"
+rope = "*"
 
 [packages]
 toml_resume = {editable = true,path = "."}
 jsonschema = "*"
 fire = "*"
+invoke = "*"

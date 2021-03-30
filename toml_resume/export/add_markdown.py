@@ -58,7 +58,7 @@ def inject_css(css_dict):
 
 def convert_markdown_and_add_css(input_filename, output_filename):
     output_lines = []
-    for line in open(input_filename):
+    for line in open(input_filename, 'r'):
         if line.strip() == END_OF_STYLE:
             output_lines.append(inject_css(MY_CSS_DICT))
         output_lines.append(basic_markdown(line))
