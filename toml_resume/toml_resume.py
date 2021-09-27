@@ -65,7 +65,8 @@ def combine_all_flavors(d: Dict[str, Any], flavors: List[str]) -> Dict[str, Any]
         flatten_flavors_dict(with_default.get(flavor, {}), flavors)
         for flavor in flavors
     ]
-    return functools.reduce(lambda x, y: {**y, **x}, to_combine)
+    reduced = functools.reduce(lambda x, y: {**y, **x}, to_combine)
+    return reduced
 
 
 def first_present_key(d: Dict[str, Any], lst: List[str]) -> Optional[str]:
@@ -89,6 +90,8 @@ def flatten_flavors_dict(d: dict, flavors: List[str]) -> dict:
             return flatten_flavors_dict(chosen_value, flavors)
         elif isinstance(chosen_value, list):
             return flatten_flavors_list(chosen_value, flavors)
+        elif is_flavor(chosen_value):
+            return d[chosen_value]
         else:
             return chosen_value
     for k, v in d.items():

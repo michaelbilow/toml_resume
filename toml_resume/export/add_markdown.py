@@ -1,11 +1,21 @@
 import re
 
 ITALICIZE = {"__([^_]+)__": r"<i>\1</i>"}
+STRONG_TO_BOLD = {"([</])strong>": r"\1b>"}
 BOLD = {"[*]{2}([^*]+)[*]{2}": r"<b>\1</b>"}
+EM_TO_ITALIC = {"([</])em>": r"\1i>"}
 LINK = {r"\[([^\]]+)\]\(([^)]+)\)": r'<a href="\2">\1</a>'}
 EM_DASH = {r"(\w)--(\w)": r"\1&mdash;\2"}
 EM_DASH_DATE = {r'(<span class="endDate">) - ': r"\1&mdash; "}
-MARKDOWN_DICT = {**ITALICIZE, **BOLD, **LINK, **EM_DASH, **EM_DASH_DATE}
+MARKDOWN_DICT = {
+    **ITALICIZE,
+    **BOLD,
+    **LINK,
+    **EM_DASH,
+    **EM_DASH_DATE,
+    **STRONG_TO_BOLD,
+    **EM_TO_ITALIC,
+}
 
 END_OF_STYLE = "</style>"
 
@@ -18,6 +28,7 @@ MY_CSS_DICT = {
     ".item": {"margin-bottom": "9px"},
     ".interests-container .item": {"margin-bottom": "3px"},
     "ul li": {"padding-bottom": "2px"},
+    "ul" : {"list-style-type": "square"}
 }
 MY_CSS_COMMENT = "\n\n/* ADDED CSS */\n\n"
 
