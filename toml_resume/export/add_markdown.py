@@ -23,12 +23,13 @@ MY_CSS_DICT = {
     ".left-column": {"width": "180px"},
     ".info-tag-container .info-text": {"width": "159px"},
     ".keyline": {"margin": "4px 0 5px"},
-    ".container": {"padding-top": "12px"},
+    ".container": {"padding-top": "10px"},
     ".summary": {"margin": "2px 0 2px"},
-    ".item": {"margin-bottom": "9px"},
+    ".item": {"margin-bottom": "6px"},
     ".interests-container .item": {"margin-bottom": "3px"},
     "ul li": {"padding-bottom": "2px"},
-    "ul" : {"list-style-type": "square"}
+    "ul" : {"list-style-type": "square"},
+    ".page": {"padding-top":"20px"}
 }
 MY_CSS_COMMENT = "\n\n/* ADDED CSS */\n\n"
 

@@ -59,6 +59,7 @@ class TomlResume:
         output_configs = toml.load(config_filename)
         for output_stub, config in output_configs.items():
             output_filename = f"{output_stub}.pdf"
+            print(config)
             generate_resume_from_toml_and_config(filename, output_filename, config)
 
 
